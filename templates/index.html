@@ -1,6 +1,62 @@
 {% extends "template.html" %}
 {% block conteudo %}
-<div>
-    
-</div>
+<form action="/criar" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="cod">Cod</label>
+            <input type="text" id="cod" name="cod" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" name="data" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="doc">Doc</label>
+            <input type="text" id="doc" name="doc" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input type="text" id="valor" name="valor" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <input type="text" id="tipo" name="tipo" class="form-control">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>        
+            <button type="reset" class="btn btn-primary btn-apagar">Apagar</button>
+        </div>
+    </fieldset>
+</form>
+
+<p></p>
+
+<table class="table table-striped table-responsive table-bordered">
+    <thead class="thead-default">
+        <tr>
+            <th>Cod.</th>
+            <th>Data</th>
+            <th>Doc.</th>
+            <th>Valor</th>
+            <th>Tipo</th>
+            <th>Taxa</th>
+            <th>Desconto</th>
+            <th>Valor Liquido</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for jogo in jogos %}
+        <tr>
+            <td>{{jogo.cod}}</td>
+            <td>{{jogo.data}}</td>
+            <td>{{jogo.doc}}</td>
+            <td>{{jogo.valor}}</td>
+            <td>{{jogo.tipo}}</td>
+            <td>{{'taxa'}}</td>
+            <td>{{'desconto'}}</td>
+            <td>{{'valor liquido'}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
 {% endblock %}
