@@ -1,39 +1,52 @@
 
 from flask import Flask, render_template, redirect, request
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-
-lista = []
-
-
-class Cartao():
-    def __init__(self, cod=int, data=str, doc=int, tipo=str, valor=float):
-        self.cod = cod
-        self.data = data
-        self.doc = doc
-        self.tipo = tipo
-        self.valor = valor
+app.config.from_pyfile('config.py')
 
 
-cartao = Cartao(1, '14/06/2022', 1023040, 'Credito', 115.0)
-lista.append(cartao)
+db = SQLAlchemy(app)
+
+
+class Cartao(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    data = db.Column(db.Date, nullable=False)
+    doc = db.Column(db.String(10), nullable=False)
+    tipo = db.Column(db.String(100), nullable=False)
+    valor = db.Column(db.Float(10), nullable=False)
+
+    def __repr__(self):
+        return '<Name %r>' % self.name
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', titulo='Controle Cartão', jogos=lista)
+    lancamentos = Cartao.query.order_by(Cartao.id)
+    print()
+    print(lancamentos)
+    print()
+    
+    return render_template('index.html', titulo='Controle Cartão', lancamentos=lancamentos, taxa=1.45)
 
 
 @app.route('/criar', methods=['POST', ])
 def criar():
-    cod = request.form['cod']
+    id = request.form['id']
     data = request.form['data']
     doc = request.form['doc']
     tipo = request.form['tipo']
     valor = request.form['valor']
-    cartao = Cartao(cod, data, doc, tipo, valor)
-    lista.append(cartao)
+
+    novo_lancamento = Cartao(data=data, doc=doc, tipo=tipo, valor=valor)
+    db.session.add(novo_lancamento)
+    db.session.commit()
+
     return redirect('/')
 
 
 app.run(debug=True)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

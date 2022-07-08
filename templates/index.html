@@ -1,11 +1,7 @@
 {% extends "template.html" %}
 {% block conteudo %}
 <form action="/criar" method="post">
-    <fieldset>
-        <div class="form-group">
-            <label for="cod">Cod</label>
-            <input type="text" id="cod" name="cod" class="form-control">
-        </div>
+    <fieldset>        
         <div class="form-group">
             <label for="data">Data</label>
             <input type="date" id="data" name="data" class="form-control">
@@ -20,10 +16,17 @@
         </div>
         <div class="form-group">
             <label for="tipo">Tipo</label>
-            <input type="text" id="tipo" name="tipo" class="form-control">
+            <br>
+            <select id=tipo name="tipo" class="form-control">
+                <option value="Credito">Credito</option>
+                <option value="Debito">Debito</option>
+            </select>
+            <!-- <input type="" id="tipo" name="tipo" class="form-control"> -->
         </div>
         <div>
-            <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>        
+            <p></p>
+
+            <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
             <button type="reset" class="btn btn-primary btn-apagar">Apagar</button>
         </div>
     </fieldset>
@@ -34,7 +37,7 @@
 <table class="table table-striped table-responsive table-bordered">
     <thead class="thead-default">
         <tr>
-            <th>Cod.</th>
+            <th>Id.</th>
             <th>Data</th>
             <th>Doc.</th>
             <th>Valor</th>
@@ -45,16 +48,16 @@
         </tr>
     </thead>
     <tbody>
-        {% for jogo in jogos %}
+        {% for lancamento in lancamentos %}
         <tr>
-            <td>{{jogo.cod}}</td>
-            <td>{{jogo.data}}</td>
-            <td>{{jogo.doc}}</td>
-            <td>{{jogo.valor}}</td>
-            <td>{{jogo.tipo}}</td>
-            <td>{{'taxa'}}</td>
-            <td>{{'desconto'}}</td>
-            <td>{{'valor liquido'}}</td>
+            <td>{{lancamento.id}}</td>
+            <td>{{lancamento.data}}</td>
+            <td>{{lancamento.doc}}</td>
+            <td>{{lancamento.valor}}</td>
+            <td>{{lancamento.tipo}}</td>
+            <td>{{ taxa }}</td>
+            <td>{{ (lancamento.valor*taxa/100) }}</td>
+            <td>{{lancamento.valor-(lancamento.valor*taxa/100)}}</td>
         </tr>
         {%endfor%}
     </tbody>
